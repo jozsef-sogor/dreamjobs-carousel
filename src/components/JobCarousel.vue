@@ -1,12 +1,13 @@
 <template>
   <section class="carousel">
     <job-card 
-      v-for="job in computedJobs"
+      v-for="(job, index) in computedJobs"
       :key="job.datailsURL"
       :job="job"
+      :isHighlighted="index == 2"
       @time-open="openTime=true"
     />
-    <button class="btn btn--primary" @click="isReversed=!isReversed">{{isReversed ? 'hátra' : 'előre'}}</button>
+    <main-button type="primary" @click.native="isReversed=!isReversed">{{isReversed ? 'hátra' : 'előre'}}</main-button>
   </section>
 </template>
 
