@@ -1,11 +1,13 @@
 <template>
-  <div class="carousel">
+  <section class="carousel">
     <job-card 
-      v-for="job in jobs"
+      v-for="job in computedJobs"
       :key="job.datailsURL"
       :job="job"
+      @time-open="openTime=true"
     />
-  </div>
+    <button class="btn btn--primary" @click="isReversed=!isReversed">{{isReversed ? 'hátra' : 'előre'}}</button>
+  </section>
 </template>
 
 <script>
@@ -14,7 +16,8 @@ import JobCard from '@/components/JobCard'
 export default {
   data() {
     return {
-      isReversed: false
+      isReversed: false,
+      openTime: false
     }
   },
   computed: {
