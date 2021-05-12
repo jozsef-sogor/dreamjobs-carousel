@@ -3,7 +3,14 @@
   <h2 class="card__title">{{job.title}}</h2>
   <p class="card__subtitle">{{job.companyName}}</p>
   <ul class="card__technologies-container">
-    <li class="card__tech-pill" v-for="(tech, index) in job.technologies" :key="index">{{tech}}</li>
+    <li 
+      class="card__tech-pill" 
+      :class="{'card__tech-pill--highlighted': isHighlighted}" 
+      v-for="(tech, index) in job.technologies" 
+      :key="index"
+    >
+      {{tech}}
+    </li>
   </ul>
 
   <main-button type="secondary" @click.native="$emit('time-open')">Idő megtekintése</main-button>
@@ -57,6 +64,9 @@ export default {
       margin: $space-xxs;
       font-size: $font-s;
       background-color: $accent-color;
+      &--highlighted {
+        border: $dark-color 1px solid
+      }
     }
     &--highlighted {
       border-color: $cta-color;

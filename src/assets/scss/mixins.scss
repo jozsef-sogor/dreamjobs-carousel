@@ -10,3 +10,35 @@
   padding: 0;
   text-indent: 0;
 }
+
+@mixin position-center() {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+@mixin position-fixed-center() {
+  @include position-center();
+  position: fixed;
+}
+
+@mixin position-abs-center() {
+  @include position-center();
+  position: absolute;
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin full-screen() {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+}

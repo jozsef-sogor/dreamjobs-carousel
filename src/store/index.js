@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    jobs: []
+    jobs: [],
+    selectedTime: null,
+    deviceType: null
   },
   getters: {
     getJobsArray: (state) => (numberOfItems) => {
@@ -15,6 +17,12 @@ export default new Vuex.Store({
   mutations: {
     SET_JOBS(state, jobs) {
       state.jobs = jobs
+    },
+    SET_SELECTEDTIME(state, time) {
+      state.selectedTime = time
+    },
+    SET_DEVICETYPE(state, type) {
+      state.deviceType = type
     }
   },
   actions: {
@@ -29,6 +37,14 @@ export default new Vuex.Store({
         .then(response => response.json())
         .then(data => { commit('SET_JOBS', data)})
         .catch(err => console.log(err))
+    },
+    setDeviceType({ commit }, screenWidth) {
+      if(!screenWidth || isNaN(screenWidth)) return
+
+      if (screenWidth <= 768) commit('SET_DEVICETYPE', 'mobile')
+      else if (screenWidth <= 1024) commit('SET_DEVICETYPE', 'tablet')
+      else commit('SET_DEVICETYPE', 'desktop')
+      
     }
   },
   modules: {
