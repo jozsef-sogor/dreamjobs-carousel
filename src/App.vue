@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <job-carousel />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import JobCarousel from '@/components/JobCarousel'
 
 export default {
   name: 'App',
+  created() {
+    this.$store.dispatch('fetchJobsLocal')
+  },
   components: {
-    HelloWorld
+    JobCarousel
   }
 }
 </script>
