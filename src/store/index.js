@@ -32,7 +32,7 @@ export default new Vuex.Store({
         .then(data => commit('SET_JOBS', data))
         .catch(err => console.log(err))
     },
-    fetchJobsLocal({ commit }) {
+    fetchJobsProxy({ commit }) {
       fetch('https://cors-anywhere.herokuapp.com/http://jozsef-sogor.com/data.json')
         .then(response => response.json())
         .then(data => { commit('SET_JOBS', data)})

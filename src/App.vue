@@ -22,7 +22,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchJobsLocal')
+    this.$store.dispatch('fetchJobsProxy')
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);

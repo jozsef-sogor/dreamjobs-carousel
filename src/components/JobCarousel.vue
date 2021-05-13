@@ -1,5 +1,5 @@
 <template>
-  <section class="carousel">
+  <section class="carousel" v-if="computedJobs.length">
     <div class="carousel__body">
         <div class="carousel__stepper carousel__stepper--backward" @click="stepBackward">&lt;</div>
         <div class="carousel__stepper carousel__stepper--forward" @click="stepForward">&gt;</div>
