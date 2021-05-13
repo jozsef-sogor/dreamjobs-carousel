@@ -3,7 +3,11 @@
     <div class="carousel__body">
         <div class="carousel__stepper carousel__stepper--backward" @click="stepBackward">&lt;</div>
         <div class="carousel__stepper carousel__stepper--forward" @click="stepForward">></div>
-        <div class="carousel__content">
+        <div class="carousel__content"             
+          @touchstart="handleTouchStart($event)"
+          @touchmove="handleTouchMove($event)"
+          @touchend="handleTouchEnd($event)"
+        >
           <job-card 
             class="carousel__item"
             v-for="(job, index) in computedJobs"
@@ -11,7 +15,6 @@
             :job="job"
             :isHighlighted="index == 2"
             :style="{transform: `translateX(${cardOffset})`}"
-            ref="test"
             @time-open="handleTimeSelect(job.createdAt)"
           />
         </div>
@@ -28,7 +31,10 @@ export default {
     return {
       isReversed: false,
       firstVisibleIndex: 0,
-      nextCardWidth: 0
+      touch: {
+        start: null,
+        end: null
+      }
     }
   },
   computed: {
@@ -52,9 +58,6 @@ export default {
       }
     }
   },
-  updated() {
-    this.nextCardWidth = this.$refs.test[0].$el.clientWidth
-  },
   methods: {
     handleTimeSelect(time) {
       this.$store.commit('SET_SELECTEDTIME', time)
@@ -71,7 +74,21 @@ export default {
       if(this.firstVisibleIndex <= 0) { this.firstVisibleIndex = this.computedJobs.length - this.visibleCardsAmount + 1; return }
       
       this.firstVisibleIndex--
-    }
+    },
+    handleTouchStart(event) {
+      this.touch.start = event.touches[0].clientX;
+      this.touch.end = 0;
+    },
+    handleTouchMove(event) {
+      this.touch.end = event.touches[0].clientX;
+    },
+    handleTouchEnd() {
+      //Minimum 20 pixelnyi swipe kell
+      if(!this.touch.end || Math.abs(this.touch.end - this.touch.start) < 20) return;
+          
+ 
+        this.touch.end < this.touch.start ? this.stepForward() : this.stepBackward()
+      }
   },
   components: {
     JobCard
