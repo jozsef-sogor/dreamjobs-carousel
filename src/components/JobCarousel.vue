@@ -37,7 +37,7 @@ export default {
       return  this.isReversed ? jobs.reverse() : jobs
     },
     cardOffset() {
-      return `calc(${this.firstVisibleIndex * -100 + '% + 5rem'})`
+      return `calc(${this.firstVisibleIndex * -100}% - ${this.firstVisibleIndex * 1.5}rem)`
     },
     visibleCardsAmount() {
       let deviceType = this.$store.state.deviceType
@@ -62,7 +62,7 @@ export default {
     stepForward() {
       //this.nextCardWidth = this.$refs.test[this.firstVisibleIndex].$el.clientWidth
       //Ellenőrzés, hogy a sor végére értünk vagy sem
-      if(this.firstVisibleIndex >= this.computedJobs.length - this.visibleCardsAmount + 1) { this.firstVisibleIndex = 0; return }
+      if(this.firstVisibleIndex >= this.computedJobs.length - this.visibleCardsAmount) { this.firstVisibleIndex = 0; return }
       
       this.firstVisibleIndex++
     },
