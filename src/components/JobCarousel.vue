@@ -2,7 +2,7 @@
   <section class="carousel">
     <div class="carousel__body">
         <div class="carousel__stepper carousel__stepper--backward" @click="stepBackward">&lt;</div>
-        <div class="carousel__stepper carousel__stepper--forward" @click="stepForward">></div>
+        <div class="carousel__stepper carousel__stepper--forward" @click="stepForward">&gt;</div>
         <div class="carousel__content"             
           @touchstart="handleTouchStart($event)"
           @touchmove="handleTouchMove($event)"
@@ -70,8 +70,8 @@ export default {
       this.firstVisibleIndex++
     },
     stepBackward() {
-      //Ellenőrzés, hogy a sor végére értünk vagy sem
-      if(this.firstVisibleIndex <= 0) { this.firstVisibleIndex = this.computedJobs.length - this.visibleCardsAmount + 1; return }
+      //Ellenőrzés, hogy a sor elejére értünk vagy sem
+      if(this.firstVisibleIndex <= 0) { this.firstVisibleIndex = this.computedJobs.length - this.visibleCardsAmount; return }
       
       this.firstVisibleIndex--
     },
@@ -106,6 +106,7 @@ export default {
     &__stepper {
       @include flex-center;
       padding: $space-s;
+      width: $space-l;
       cursor: pointer;
       height: 100%;
       background-color: $accent-color;
@@ -135,7 +136,8 @@ export default {
     &__content {
       @include flex-center;
       justify-content: flex-start;
-      width: 100%;
+      width: calc(100% - 2 * #{$space-l});
+      margin: auto;
     }
     &__item {
       transition: .3s ease;
