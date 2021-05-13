@@ -1,14 +1,20 @@
 <template>
   <section class="carousel">
     <div class="carousel__body">
-        <job-card 
-          class="carousel__item"
-          v-for="(job, index) in computedJobs"
-          :key="job.datailsURL"
-          :job="job"
-          :isHighlighted="index == 2"
-          @time-open="handleTimeSelect(job.createdAt)"
-        />
+        <div class="carousel__stepper carousel__stepper--backward" @click="stepBackward">&lt;</div>
+        <div class="carousel__stepper carousel__stepper--forward" @click="stepForward">></div>
+        <div class="carousel__content">
+          <job-card 
+            class="carousel__item"
+            v-for="(job, index) in computedJobs"
+            :key="job.datailsURL"
+            :job="job"
+            :isHighlighted="index == 2"
+            :style="{transform: `translateX(${cardOffset})`}"
+            ref="test"
+            @time-open="handleTimeSelect(job.createdAt)"
+          />
+        </div>
     </div>
     <main-button type="primary" @click.native="isReversed=!isReversed">{{isReversed ? 'hátra' : 'előre'}}</main-button>
   </section>
@@ -21,6 +27,8 @@ export default {
   data() {
     return {
       isReversed: false,
+      firstVisibleIndex: 0,
+      nextCardWidth: 0
     }
   },
   computed: {
@@ -28,10 +36,41 @@ export default {
       let jobs = this.$store.getters.getJobsArray(10)
       return  this.isReversed ? jobs.reverse() : jobs
     },
+    cardOffset() {
+      return `calc(${this.firstVisibleIndex * -100 + '% + 5rem'})`
+    },
+    visibleCardsAmount() {
+      let deviceType = this.$store.state.deviceType
+
+      switch(deviceType) {
+        case 'desktop':
+          return 5
+        case 'tablet': 
+          return 3 
+        default: 
+          return 1
+      }
+    }
+  },
+  updated() {
+    this.nextCardWidth = this.$refs.test[0].$el.clientWidth
   },
   methods: {
     handleTimeSelect(time) {
       this.$store.commit('SET_SELECTEDTIME', time)
+    },
+    stepForward() {
+      //this.nextCardWidth = this.$refs.test[this.firstVisibleIndex].$el.clientWidth
+      //Ellenőrzés, hogy a sor végére értünk vagy sem
+      if(this.firstVisibleIndex >= this.computedJobs.length - this.visibleCardsAmount + 1) { this.firstVisibleIndex = 0; return }
+      
+      this.firstVisibleIndex++
+    },
+    stepBackward() {
+      //Ellenőrzés, hogy a sor végére értünk vagy sem
+      if(this.firstVisibleIndex <= 0) { this.firstVisibleIndex = this.computedJobs.length - this.visibleCardsAmount + 1; return }
+      
+      this.firstVisibleIndex--
     }
   },
   components: {
@@ -45,13 +84,52 @@ export default {
     width: 100%;
     overflow: hidden;
     &__body {
-      display: flex;
+      position: relative;
+    }
+    &__stepper {
+      @include flex-center;
+      padding: $space-s;
+      cursor: pointer;
+      height: 100%;
+      background-color: $accent-color;
+      transition: .3s ease;
+      z-index: 1;
+      &--backward {
+        @include flex-center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        &:hover {
+          transform: translateX(-$space-xs);
+        }
+      }
+      &--forward {
+        @include flex-center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        &:hover {
+          transform: translateX($space-xs);
+        }
+      }
+    }
+    &__content {
+      @include flex-center;
+      justify-content: flex-start;
+      width: 100%;
     }
     &__item {
+      transition: .3s ease;
       margin: $space-s;
-      min-width: 250px;
-      max-width: 350px;
-      width: 90vw;
+      min-width: calculate-card-with(($space-s * 2), 1);
+      @include tablet-query {
+        min-width: calculate-card-with(($space-s * 2), 3);
+      }
+      @include desktop-query {
+        min-width: calculate-card-with(($space-s * 2), 5);
+      }
     }
   }
 

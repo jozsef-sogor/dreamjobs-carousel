@@ -35,7 +35,7 @@ export default {
       margin: auto;
     }
     &__footer {
-      @include flex-center();
+      @include flex-center;
       padding: $space-s $space-s 0;
     }
   }

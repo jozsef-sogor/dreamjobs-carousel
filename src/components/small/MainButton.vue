@@ -25,7 +25,7 @@ export default {
     cursor: pointer;
     &--primary {
       border: $cta-color 2px solid;
-      @include border-radius(5px)
+      @include border-radius(5px);
       &:hover {
         background-color: $cta-color;
       }

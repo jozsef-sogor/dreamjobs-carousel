@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 
+import '@/assets/scss/global.scss'
+
 import MainButton from '@/components/small/MainButton'
 Vue.component('main-button', MainButton)
 
