@@ -38,13 +38,12 @@ export default new Vuex.Store({
         .then(data => { commit('SET_JOBS', data)})
         .catch(err => console.log(err))
     },
-    setDeviceType({ commit }, screenWidth) {
+    setDeviceType({ commit, state }, screenWidth) {
       if(!screenWidth || isNaN(screenWidth)) return
 
-      if (screenWidth <= 768) commit('SET_DEVICETYPE', 'mobile')
-      else if (screenWidth <= 1024) commit('SET_DEVICETYPE', 'tablet')
-      else commit('SET_DEVICETYPE', 'desktop')
-      
+      if (screenWidth <= 768 && state.deviceType != 'mobile') commit('SET_DEVICETYPE', 'mobile')
+      else if (screenWidth > 768 && screenWidth <= 1024 && state.deviceType != 'tablet') commit('SET_DEVICETYPE', 'tablet')
+      else if (screenWidth > 1024 && state.deviceType != 'desktop') commit('SET_DEVICETYPE', 'desktop')  
     }
   },
   modules: {
